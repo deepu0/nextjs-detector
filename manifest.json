@@ -5,7 +5,8 @@
   "description": "Detects if the current page is running Next.js.",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "action": {
     "default_icon": {
@@ -25,19 +26,19 @@
         "<all_urls>"
       ],
       "js": [
-        "detector.js"
-      ],
-      "run_at": "document_idle",
-      "world": "MAIN"
-    },
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
         "contentScript.js"
       ],
       "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "inject.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "icons": {
