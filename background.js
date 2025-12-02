@@ -51,3 +51,30 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     chrome.storage.local.remove(tabId.toString());
   }
 });
+
+// Inject content script on install/update to support existing tabs
+chrome.runtime.onInstalled.addListener(async () => {
+  const manifest = chrome.runtime.getManifest();
+  const contentScripts = manifest.content_scripts;
+
+  if (contentScripts) {
+    for (const cs of contentScripts) {
+      const tabs = await chrome.tabs.query({ url: cs.matches });
+      for (const tab of tabs) {
+        // Skip restricted pages
+        if (!tab.url || tab.url.startsWith('chrome://') || tab.url.startsWith('edge://') || tab.url.startsWith('about:') || tab.url.startsWith('chrome-extension://')) {
+          continue;
+        }
+
+        try {
+          await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: cs.js,
+          });
+        } catch (err) {
+          // Ignore errors (e.g. cannot access tab)
+        }
+      }
+    }
+  }
+});
