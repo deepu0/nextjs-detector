@@ -45,18 +45,31 @@ You will need to upload these images. You can use the `generate_image` tool or c
 -   **Marquee Tile (Small)**: 440x280 pixels.
 -   **Marquee Tile (Large)**: 920x680 pixels.
 
-## 5. Privacy Practices
+## 5. Privacy & Permissions (Copy & Paste)
 
-The store requires you to declare privacy practices.
+When asked for justifications in the "Privacy" tab:
 
--   **Single Purpose**: "Detect Next.js framework presence and version."
--   **Permission Justification**:
-    -   `activeTab`: "To access the current page URL and status when the user interacts with the extension."
-    -   `scripting`: "To inject a lightweight detection script into the page context to read the Next.js version."
-    -   `storage`: "To temporarily store the detected version for display in the popup."
--   **Data Usage**:
-    -   Does this extension collect user data? **No**.
-    -   (Uncheck all data collection boxes).
+### **activeTab justification**
+> Used to access the current tab's details when the popup is opened, ensuring the displayed version matches the active page.
+
+### **scripting justification**
+> Required to inject a script into the page's main context to read `window.next.version`, which is inaccessible to standard content scripts due to isolation.
+
+### **storage justification**
+> Used to locally cache the detected Next.js version for each tab so the popup can display it instantly.
+
+### **Host permission justification**
+> Required to scan every visited page for Next.js markers (like `window.next` or `__NEXT_DATA__`) to automatically update the extension icon state.
+
+### **Remote Code**
+- **Are you using remote code?**: No.
+
+### **Privacy Policy URL**
+Since this extension does not collect data, you might not strictly need a policy, but it is recommended.
+1.  I have created a `PRIVACY_POLICY.md` file in your project.
+2.  **Option A (Easiest)**: If you push this code to GitHub, use the "Raw" URL of that file.
+3.  **Option B**: Create a public [GitHub Gist](https://gist.github.com/) with the content of `PRIVACY_POLICY.md` and paste that URL.
+4.  **Option C**: If you have a personal website, host the text there.
 
 ## 6. Review and Publish
 
