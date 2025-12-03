@@ -50,6 +50,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     // Clear stored version
     chrome.storage.local.remove(tabId.toString());
   }
+
+  // Re-check on completion or URL change (handles SPA navigation)
+  if (changeInfo.status === 'complete' || changeInfo.url) {
+    chrome.tabs.sendMessage(tabId, { type: "CHECK_NEXT_JS" }).catch(() => {
+      // Ignore errors (e.g. content script not ready yet)
+    });
+  }
 });
 
 // Inject content script on install/update to support existing tabs
