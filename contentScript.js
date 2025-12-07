@@ -1,10 +1,19 @@
 // contentScript.js
 
+let isInjected = false;
+
 function injectScript() {
+  if (isInjected) {
+    // Script already injected, just request a version re-check
+    window.postMessage({ type: "__REQUEST_VERSION__" }, "*");
+    return;
+  }
+
   const s = document.createElement("script");
   s.src = chrome.runtime.getURL("inject.js");
   s.onload = function () {
     this.remove();
+    isInjected = true;
   };
   (document.head || document.documentElement).appendChild(s);
 }
